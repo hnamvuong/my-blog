@@ -8,16 +8,16 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Add New Category</h3>
+                                <h3 class="card-title">Edit Category</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" @click="addCategory()">
+                            <form role="form" @submit.prevent="updateCategory()">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="categoryId">Category Name</label>
                                         <input v-model="form.name" name="name" type="text" class="form-control"
-                                               id="categoryId" placeholder="Add New Category"
+                                               id="categoryId" placeholder="Update New Category"
                                                :class="{ 'is-invalid': form.errors.has('name') }">
                                         <has-error :form="form" field="name"></has-error>
                                     </div>
@@ -26,7 +26,7 @@
 
                                 <div class="card-footer">
                                     <router-link class="btn btn-danger" to="/category-list">Back</router-link>
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </form>
                         </div>
@@ -41,7 +41,13 @@
 
 <script>
     export default {
-        name: "New",
+        name: "Edit",
+        mounted() {
+            axios.get(`/category/edit/${this.$route.params.categoryId}`)
+                .then((response) => {
+                    this.form.fill(response.data.category)
+                })
+        },
         data() {
             return {
                 // Create a new form instance
@@ -51,12 +57,12 @@
             }
         },
         methods: {
-            addCategory() {
-                this.form.post('/add-category').then((response) => {
+            updateCategory() {
+                this.form.put(`/category/${this.$route.params.categoryId}`).then((response) => {
                     this.$router.push('/category-list');
                     toast({
                         type: 'success',
-                        title: 'Category Added Successfully'
+                        title: 'Category Updated Successfully'
                     })
                 })
                 .catch(() => {
