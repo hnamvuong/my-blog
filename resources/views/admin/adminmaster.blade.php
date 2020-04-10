@@ -57,15 +57,15 @@
                     </li>
                     <li class="nav-item">
                         <router-link to="/category-list" class="nav-link">
-                            <i class="nav-icon fa fa-th"></i>
+                            <i class="nav-icon fa fa-list-alt"></i>
                             <p>
                                 Category
                             </p>
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/post" class="nav-link">
-                            <i class="nav-icon fa fa-th"></i>
+                        <router-link to="/post-list" class="nav-link">
+                            <i class="nav-icon fas fa-blog"></i>
                             <p>
                                 Post
                             </p>

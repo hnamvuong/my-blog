@@ -32,3 +32,10 @@ Route::get('/category', 'CategoryController@index');
 Route::delete('/category/{id}', 'CategoryController@destroy');
 Route::get('/category/edit/{id}', 'CategoryController@edit');
 Route::put('/category/{id}', 'CategoryController@update');
+
+//Post
+Route::post('/add-post', 'PostController@store');
+Route::get('/post', 'PostController@index');
+Route::delete('/post/{id}', 'PostController@destroy');
+Route::get('/post/edit/{id}', 'PostController@edit');
+Route::put('/post/{id}', 'PostController@update');
