@@ -48,7 +48,7 @@
                          with font-awesome or any other icon font library -->
                     <li class="nav-item has-treeview">
                         <router-link to="/home" class="nav-link">
-                            <i class="nav-icon fa fa-dashboard"></i>
+                            <i class="nav-icon fa fa-bars"></i>
                             <p>
                                 Dashboard
                                 <i class="right fa fa-angle-left"></i>

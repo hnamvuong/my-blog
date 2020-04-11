@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('public.index');
 });
 
 Auth::routes();
@@ -26,16 +26,19 @@ Route::get('/post', 'PostController@index')->name('post');
 
 //Route::get('/{anypath}', 'HomeController@index')->where('path', '.*');
 
-//Category
-Route::post('/add-category', 'CategoryController@store');
-Route::get('/category', 'CategoryController@index');
-Route::delete('/category/{id}', 'CategoryController@destroy');
-Route::get('/category/edit/{id}', 'CategoryController@edit');
-Route::put('/category/{id}', 'CategoryController@update');
-
-//Post
-Route::post('/add-post', 'PostController@store');
-Route::get('/post', 'PostController@index');
-Route::delete('/post/{id}', 'PostController@destroy');
-Route::get('/post/edit/{id}', 'PostController@edit');
-Route::put('/post/{id}', 'PostController@update');
+Route::group(['middleware' => ['auth']], function () {
+    //Category
+    Route::post('/add-category', 'CategoryController@store');
+    Route::get('/category', 'CategoryController@index');
+    Route::delete('/category/{id}', 'CategoryController@destroy');
+    Route::get('/category/edit/{id}', 'CategoryController@edit');
+    Route::put('/category/{id}', 'CategoryController@update');
+    //Post
+    Route::post('/add-post', 'PostController@store');
+    Route::get('/post', 'PostController@index');
+    Route::delete('/post/{id}', 'PostController@destroy');
+    Route::get('/post/edit/{id}', 'PostController@edit');
+    Route::put('/post/{id}', 'PostController@update');
+});
+//Blog Post
+Route::get('/blog-post', 'BlogController@getAllBlog');

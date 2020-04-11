@@ -72,9 +72,10 @@ class PostController extends Controller
             $ex = explode('/', $sub)[1];
             $name = time() . "." . $ex;
             $img = Image::make($request->photo)->resize(200, 200);
-            $upload_path = public_path() . "/uploadimage/";
+            $upload_path = public_path("/uploadimage/");
             $image = $upload_path . $post->photo;
-            $img->save($upload_path . $name);
+//            $img->save($upload_path . $name);
+            file_put_contents($upload_path, $request->photo);
 
             if (file_exists($image)) {
                 @unlink($image);

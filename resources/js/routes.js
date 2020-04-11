@@ -7,6 +7,11 @@ import EditCategory from './components/admin/category/Edit'
 import PostList from './components/admin/post/List'
 import AddPost from './components/admin/post/New'
 import EditPost from './components/admin/post/Edit'
+//Frontend
+import PublicHome from "./components/public/PublicHome";
+import BlogPost from "./components/public/blog/BlogPost";
+import BlogSidebar from "./components/public/blog/BlogSidebar";
+import SingleBlog from "./components/public/blog/SingleBlog";
 
 export const routes = [
     {
@@ -39,4 +44,13 @@ export const routes = [
         path: '/edit-post/:postId',
         component: EditPost
     },
+    //Frontend Page
+    {
+        path: '/',
+        component: PublicHome
+    },
+    {
+        path: '/blog',
+        component: BlogPost
+    }
 ];
