@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="descriptionId">Add Description Post</label>
-                                    <textarea v-model="form.description" name="title" type="text"
+                                    <textarea v-model="form.description" name="description" type="text"
                                               class="form-control"
                                               id="descriptionId" placeholder="Add Description Post"
                                               :class="{ 'is-invalid': form.errors.has('description') }">
@@ -97,7 +97,6 @@
                     let reader = new FileReader();
                     reader.onload = event => {
                         this.form.photo = event.target.result;
-                        console.log(event.target.result);
                     };
                     reader.readAsDataURL(file);
                 }

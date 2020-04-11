@@ -58,14 +58,15 @@
         },
         methods: {
             updateCategory() {
-                this.form.put(`/category/${this.$route.params.categoryId}`).then((response) => {
-                    this.$router.push('/category-list');
-                    toast({
-                        type: 'success',
-                        title: 'Category Updated Successfully'
+                this.form.put(`/category/${this.$route.params.categoryId}`)
+                    .then((response) => {
+                        this.$router.push('/category-list');
+                        toast({
+                            type: 'success',
+                            title: 'Category Updated Successfully'
+                        })
                     })
-                })
-                .catch(() => {
+                    .catch(() => {
 
                 })
             }
