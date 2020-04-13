@@ -52,5 +52,13 @@ export const routes = [
     {
         path: '/blog',
         component: BlogPost
+    },
+    {
+        path: "/blog/:blogId",
+        component: SingleBlog
+    },
+    {
+        path: "/categories/:categoryId",
+        component: BlogPost
     }
 ];

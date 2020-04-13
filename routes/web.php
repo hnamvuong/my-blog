@@ -42,3 +42,6 @@ Route::group(['middleware' => ['auth']], function () {
 });
 //Blog Post
 Route::get('/blog-post', 'BlogController@getAllBlog');
+Route::get('/blog-post/{id}', 'BlogController@getBlogById');
+Route::get('/category-blog', 'BlogController@getCategoryBlog');
+Route::get('/category-blog/{id}', 'BlogController@getBlogByCategoryId');

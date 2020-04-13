@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="span4">
                         <div class="inner-heading">
-                            <h2>Blog left sidebar</h2>
+                            <h2>Blog left sidebar {{this.$route.params.categoryId}}</h2>
                         </div>
                     </div>
                     <div class="span8">
@@ -34,14 +34,16 @@
                                     <p>{{blog.description | sortlength(500, '...')}}</p>
                                     <div class="bottom-article">
                                         <ul class="meta-post">
-                                            <li><i class="icon-calendar"></i><a href="#"> Mar 23, 2013</a></li>
-                                            <li v-if="blog.user"><i class="icon-user"></i><a href="#">{{blog.user.name}}</a></li>
+                                            <li><i class="icon-calendar"></i><a href="#">{{blog.created_at | timeformat}}</a></li>
+                                            <li v-if="blog.user"><i class="icon-user"></i><a
+                                                href="#">{{blog.user.name}}</a></li>
                                             <li v-else><i class="icon-user"></i><a href="#">Anonymous</a></li>
                                             <li v-if="blog.category"><i class="icon-folder-open"></i><a href="#">{{blog.category.name}}</a></li>
-                                            <li v-else><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
+                                            <li v-else><i class="icon-folder-open"></i><a href="#">None</a></li>
                                             <li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
                                         </ul>
-                                        <a href="#" class="pull-right">Continue reading <i class="icon-angle-right"></i></a>
+                                        <router-link :to="`/blog/${blog.id}`" class="pull-right">Continue reading <i
+                                            class="icon-angle-right"></i></router-link>
                                     </div>
                                 </div>
                             </div>
@@ -62,12 +64,11 @@
 
 <script>
     import BlogSidebar from "./BlogSidebar";
+
     export default {
         name: "BlogPost",
         data() {
-            return {
-
-            }
+            return {}
         },
         components: {
             BlogSidebar
@@ -80,8 +81,19 @@
                 return this.$store.getters.getBlogPost;
             }
         },
-        method : {
-
+        methods: {
+            getAllCategoryPost() {
+                if(this.$route.params.categoryId != null) {
+                    this.$store.dispatch('getPostByCatId', this.$route.params.categoryId);
+                } else {
+                    this.$store.dispatch('allBlogPost')
+                }
+            }
+        },
+        watch: {
+            $route(to, from) {
+                this.getAllCategoryPost();
+            }
         }
     }
 </script>

@@ -3,6 +3,8 @@ export default {
         category: [],
         post: [],
         blogPost: [],
+        singleBlog: [],
+        categoryBlog: [],
     },
     getters: {
         getCategory(state) {
@@ -13,6 +15,12 @@ export default {
         },
         getBlogPost(state) {
             return state.blogPost;
+        },
+        getSingleBlog(state) {
+            return state.singleBlog;
+        },
+        getCategoryBlog(state) {
+            return state.categoryBlog;
         }
     },
     actions: {
@@ -33,7 +41,26 @@ export default {
                 .then((response) => {
                     context.commit('blogPosts', response.data.posts)
                 })
+        },
+        getBlogById(context, payload) {
+            axios.get('/blog-post/' + payload)
+                .then((response) => {
+                    context.commit('singleBlog', response.data.blog)
+                })
+        },
+        allCategoryBlog(context) {
+            axios.get('/category-blog')
+                .then((response) => {
+                    context.commit('categoriesBlog', response.data.categories)
+                })
+        },
+        getPostByCatId(context, payload) {
+            axios.get('/category-blog/' + payload)
+                .then((response) => {
+                    context.commit('BlogByCategoryId', response.data.blogByCategory);
+                })
         }
+
     },
     mutations: {
         categories (state, data) {
@@ -43,6 +70,15 @@ export default {
             return state.post = data
         },
         blogPosts (state, data) {
+            return state.blogPost = data
+        },
+        singleBlog(state, data) {
+            return state.singleBlog = data
+        },
+        categoriesBlog(state, data) {
+            return state.categoryBlog = data
+        },
+        BlogByCategoryId(state, data) {
             return state.blogPost = data
         }
     },
