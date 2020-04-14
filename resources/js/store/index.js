@@ -28,7 +28,7 @@ export default {
             axios.get('/category')
                 .then((response) => {
                     context.commit('categories', response.data.categories)
-            })
+                })
         },
         allPost(context) {
             axios.get('/post')
@@ -59,17 +59,23 @@ export default {
                 .then((response) => {
                     context.commit('BlogByCategoryId', response.data.blogByCategory);
                 })
+        },
+        searchPost(context, payload) {
+            axios.get('/search?s=' + payload)
+                .then((response) => {
+                    context.commit('getSearchPost', response.data.posts)
+                })
         }
 
     },
     mutations: {
-        categories (state, data) {
+        categories(state, data) {
             return state.category = data
         },
-        posts (state, data) {
+        posts(state, data) {
             return state.post = data
         },
-        blogPosts (state, data) {
+        blogPosts(state, data) {
             return state.blogPost = data
         },
         singleBlog(state, data) {
@@ -79,6 +85,9 @@ export default {
             return state.categoryBlog = data
         },
         BlogByCategoryId(state, data) {
+            return state.blogPost = data
+        },
+        getSearchPost(state, data) {
             return state.blogPost = data
         }
     },

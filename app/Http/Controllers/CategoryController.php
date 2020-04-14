@@ -68,4 +68,14 @@ class CategoryController extends Controller
             'message' => 'Category Delete Successfully!'
         ], 200);
     }
+
+    public function deleteSelected($list)
+    {
+        $listId = explode(',', $list);
+        foreach ($listId as $id)
+        {
+            $category = Category::find($id);
+            $category->delete();
+        }
+    }
 }

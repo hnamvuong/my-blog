@@ -4,12 +4,12 @@
 		<aside class="right-sidebar">
 			<div class="widget">
 				<form class="form-search">
-					<input placeholder="Type something" type="text" class="input-medium search-query" v-model="keyword">
-						<button type="submit" class="btn btn-square btn-theme">Search</button>
+					<input @keyup="realSearch" placeholder="Type something" type="text" class="input-medium search-query" v-model="keyword">
+						<button type="submit" @click="realSearch" class="btn btn-square btn-theme">Search</button>
 					</form>
 				</div>
 				<div class="widget">
-					<h5 class="widgetheading">Categories</h5>
+                    <h5 class="widgetheading"><router-link to="/blog">All Categories</router-link></h5>
 					<ul class="cat">
 						<li v-for="category in getAllCategoryBlog">
 							<i class="icon-angle-right"></i>
@@ -19,7 +19,7 @@
 					</ul>
 				</div>
 				<div class="widget">
-					<h5 class="widgetheading">Latest posts</h5>
+                    <h5 class="widgetheading"><router-link to="/blog">Latest </router-link></h5>
 					<ul class="recent">
 						<li v-for="(blog, index) in getAllBlog" v-if="index<5">
 							<img :src="`uploadimage/${blog.photo}`" class="pull-left" alt="No image" width="40"
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+    import _ from 'lodash';
     export default {
         name: "BlogSidebar",
         data() {
@@ -56,7 +57,11 @@
                 return this.$store.getters.getBlogPost;
             },
         },
-        method: {}
+        methods: {
+            realSearch:_.debounce(function () {
+                this.$store.dispatch('searchPost', this.keyword);
+            }, 1000)
+        }
     }
 </script>
 

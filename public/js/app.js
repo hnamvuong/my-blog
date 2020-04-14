@@ -4549,8 +4549,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "List",
+  data: function data() {
+    return {
+      categoryItem: [],
+      select: '',
+      allSelect: false
+    };
+  },
   mounted: function mounted() {
     this.$store.dispatch('allCategory');
   },
@@ -4571,6 +4589,33 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Category Deleted Successfully'
         });
       })["catch"](function () {});
+    },
+    selectAll: function selectAll() {
+      if (this.allSelect === false) {
+        this.allSelect = true;
+
+        for (var category in this.getAllCategory) {
+          this.categoryItem.push(this.getAllCategory[category].id);
+        }
+      } else {
+        this.allSelect = false;
+        this.categoryItem = [];
+      }
+    },
+    deleteSelected: function deleteSelected() {
+      var _this2 = this;
+
+      console.log(this.categoryItem);
+      axios.get('/category/deleteSelected/' + this.categoryItem).then(function () {
+        _this2.categoryItem = [];
+
+        _this2.$store.dispatch("allCategory");
+
+        toast({
+          type: 'success',
+          title: 'Category Deleted successfully'
+        });
+      });
     }
   }
 });
@@ -5197,6 +5242,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -5235,6 +5282,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BlogSidebar",
   data: function data() {
@@ -5254,7 +5302,11 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters.getBlogPost;
     }
   },
-  method: {}
+  methods: {
+    realSearch: lodash__WEBPACK_IMPORTED_MODULE_0___default.a.debounce(function () {
+      this.$store.dispatch('searchPost', this.keyword);
+    }, 1000)
+  }
 });
 
 /***/ }),
@@ -62357,12 +62409,113 @@ var render = function() {
                   attrs: { id: "example2" }
                 },
                 [
-                  _vm._m(0),
+                  _c("thead", [
+                    _c("tr", [
+                      _c("th", [
+                        _vm.allSelect === false
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.selectAll($event)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "Check All\n                                    "
+                                )
+                              ]
+                            )
+                          : _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-warning",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.selectAll($event)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "Uncheck All\n                                    "
+                                )
+                              ]
+                            ),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger",
+                            on: { click: _vm.deleteSelected }
+                          },
+                          [_vm._v("Delete Selected")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Sl")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Category Name")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Created at")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Action")])
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c(
                     "tbody",
                     _vm._l(_vm.getAllCategory, function(category, index) {
                       return _c("tr", { key: category.id }, [
+                        _c("td", [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.categoryItem,
+                                expression: "categoryItem"
+                              }
+                            ],
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              value: category.id,
+                              checked: Array.isArray(_vm.categoryItem)
+                                ? _vm._i(_vm.categoryItem, category.id) > -1
+                                : _vm.categoryItem
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.categoryItem,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = category.id,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.categoryItem = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.categoryItem = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.categoryItem = $$c
+                                }
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(index + 1))]),
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(category.name))]),
@@ -62382,7 +62535,11 @@ var render = function() {
                                 staticClass: "btn btn-info",
                                 attrs: { to: "/edit-category/" + category.id }
                               },
-                              [_vm._v("Edit")]
+                              [
+                                _vm._v(
+                                  "Edit\n                                    "
+                                )
+                              ]
                             ),
                             _vm._v(" "),
                             _c(
@@ -62415,24 +62572,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Sl")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Category Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Created at")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Action")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -63580,6 +63720,7 @@ var render = function() {
               attrs: { placeholder: "Type something", type: "text" },
               domProps: { value: _vm.keyword },
               on: {
+                keyup: _vm.realSearch,
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -63593,7 +63734,8 @@ var render = function() {
               "button",
               {
                 staticClass: "btn btn-square btn-theme",
-                attrs: { type: "submit" }
+                attrs: { type: "submit" },
+                on: { click: _vm.realSearch }
               },
               [_vm._v("Search")]
             )
@@ -63601,7 +63743,16 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "widget" }, [
-          _c("h5", { staticClass: "widgetheading" }, [_vm._v("Categories")]),
+          _c(
+            "h5",
+            { staticClass: "widgetheading" },
+            [
+              _c("router-link", { attrs: { to: "/blog" } }, [
+                _vm._v("All Categories")
+              ])
+            ],
+            1
+          ),
           _vm._v(" "),
           _c(
             "ul",
@@ -63628,7 +63779,14 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "widget" }, [
-          _c("h5", { staticClass: "widgetheading" }, [_vm._v("Latest posts")]),
+          _c(
+            "h5",
+            { staticClass: "widgetheading" },
+            [
+              _c("router-link", { attrs: { to: "/blog" } }, [_vm._v("Latest ")])
+            ],
+            1
+          ),
           _vm._v(" "),
           _c(
             "ul",
@@ -81077,6 +81235,11 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/category-blog/' + payload).then(function (response) {
         context.commit('BlogByCategoryId', response.data.blogByCategory);
       });
+    },
+    searchPost: function searchPost(context, payload) {
+      axios.get('/search?s=' + payload).then(function (response) {
+        context.commit('getSearchPost', response.data.posts);
+      });
     }
   },
   mutations: {
@@ -81096,6 +81259,9 @@ __webpack_require__.r(__webpack_exports__);
       return state.categoryBlog = data;
     },
     BlogByCategoryId: function BlogByCategoryId(state, data) {
+      return state.blogPost = data;
+    },
+    getSearchPost: function getSearchPost(state, data) {
       return state.blogPost = data;
     }
   }

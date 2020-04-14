@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/category/{id}', 'CategoryController@destroy');
     Route::get('/category/edit/{id}', 'CategoryController@edit');
     Route::put('/category/{id}', 'CategoryController@update');
+    Route::get('/category/deleteSelected/{list}', 'CategoryController@deleteSelected');
     //Post
     Route::post('/add-post', 'PostController@store');
     Route::get('/post', 'PostController@index');
@@ -45,3 +46,5 @@ Route::get('/blog-post', 'BlogController@getAllBlog');
 Route::get('/blog-post/{id}', 'BlogController@getBlogById');
 Route::get('/category-blog', 'BlogController@getCategoryBlog');
 Route::get('/category-blog/{id}', 'BlogController@getBlogByCategoryId');
+Route::get('/search', 'BlogController@searchPost');
+Route::get('/latest-blog', 'BlogController@getLatestPost');

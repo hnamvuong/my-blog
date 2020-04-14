@@ -42,4 +42,21 @@ class BlogController extends Controller
             'blogByCategory' => $blogByCategory
         ], 200);
     }
+
+    public function searchPost(Request $request)
+    {
+        $search = $request->get('s');
+        if ($search != null) {
+            $posts = Post::with('user', 'category')
+                ->where('title', 'LIKE', "%$search%")
+                ->orWhere('description', 'LIKE', "%$search%")
+                ->get();
+        } else {
+            return $this->getAllBlog();
+        }
+
+        return response()->json([
+            'posts' => $posts
+        ], 200);
+    }
 }
